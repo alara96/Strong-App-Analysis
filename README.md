@@ -1,4 +1,4 @@
-# CS 498 E2E Final Project (sp24) repo for NetID: adrian11
+# Strong App Workout Data Anlaysis
 
 Purpose/Context: [Strong Workout Tracker Gym Log](https://www.strong.app) is an app available on iOS and Android, however some of its features are hidden behind a paywall. The primary feature is the ability to view your 1 rep max prediction on any exercise of your choice. The Strong App however does let you export your data as a csv file, hence why I created this python application, that not only allows you to view your 1 rep max on any exerciese free of charge, but also grants you the ability to view your all time best for a given exercise, and given a date range see how your workout volume compares on the the average workout volume in a given time period.
 
