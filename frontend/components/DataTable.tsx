@@ -1,3 +1,7 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
 type Row = { Date: string; "Set Order": number; Weight: number; Reps: number };
 
 type DayRow = {
@@ -6,6 +10,8 @@ type DayRow = {
   sets: string[];
   totalVolume: number;
 };
+
+type SortOption = "newest" | "oldest" | "lowest" | "highest";
 
 function formatDate(dateStr: string) {
   try {
@@ -62,14 +68,47 @@ export function DataTable({
     );
   }
 
-  const dayRows = groupByDate(data);
+  const [sort, setSort] = useState<SortOption>("newest");
+
+  const dayRows = useMemo(() => {
+    const grouped = groupByDate(data);
+    const sorted = [...grouped];
+    switch (sort) {
+      case "newest":
+        sorted.sort((a, b) => b.dateKey.localeCompare(a.dateKey));
+        break;
+      case "oldest":
+        sorted.sort((a, b) => a.dateKey.localeCompare(b.dateKey));
+        break;
+      case "lowest":
+        sorted.sort((a, b) => a.totalVolume - b.totalVolume);
+        break;
+      case "highest":
+        sorted.sort((a, b) => b.totalVolume - a.totalVolume);
+        break;
+    }
+    return sorted;
+  }, [data, sort]);
 
   return (
     <div className="rounded-xl border border-gray-200/80 bg-white overflow-hidden shadow-sm ring-1 ring-black/5">
-      <div className="border-b border-gray-200/80 bg-gradient-to-r from-gray-50 to-gray-50/70 px-5 py-4">
+      <div className="border-b border-gray-200/80 bg-gradient-to-r from-gray-50 to-gray-50/70 px-5 py-4 flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-heading font-bold text-base text-gray-800 tracking-tight">
           {title}
         </h2>
+        <label className="flex items-center gap-2">
+          <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Sort</span>
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as SortOption)}
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 shadow-sm focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+          >
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+            <option value="lowest">Lowest volume</option>
+            <option value="highest">Highest volume</option>
+          </select>
+        </label>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
