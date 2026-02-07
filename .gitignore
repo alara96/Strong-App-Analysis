@@ -2,3 +2,8 @@
 rsconnect-python/
 __pycache__/
 rsconnect-python/sp24_cs498e2e-final_adrian11.json
+
+# Next.js frontend
+frontend/node_modules/
+frontend/.next/
+frontend/.env.local

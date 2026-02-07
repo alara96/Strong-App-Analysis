@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
+from htmltools import head_content
 from shiny import App, Inputs, Outputs, Session, reactive, render, req, ui
+from shiny.types import FileInfo
 from shinywidgets import output_widget, render_widget
 from plotnine import ggplot, aes, geom_line, geom_point, scale_x_datetime, theme, element_text, labs
 
@@ -16,18 +18,17 @@ best_pr = ui.HTML(
 
 app_ui = ui.page_fillable(
     ui.page_fixed(
-        ui.panel_title(title="Analyze Your Strong App Data", window_title="Strong Data Analysis"),
+        ui.panel_title(title="Lift Metrics", window_title="Lift Metrics"),
     ),
     ui.layout_sidebar(
-        ui.panel_sidebar(
+        ui.sidebar(
             ui.input_file("file_input", "Upload Workout CSV File", accept=[".csv"], multiple=False),
             ui.output_ui("show_exercises"),
             ui.output_ui("count_sets_reps"),
             ui.input_radio_buttons("analysis", "Analysis Type:", {"1": "1 Rep Max Prediction of Selected Exercise", "2": "Workout Volume Compared to Average Workout Volume" }, selected="1"),
             ui.output_ui("time_period"),
         ),
-        ui.panel_main(
-            ui.page_navbar(
+        ui.page_navbar(
                 ui.nav_panel("Analyze",
                     ui.output_ui("pr_text"),
                     ui.layout_column_wrap(
@@ -64,7 +65,7 @@ app_ui = ui.page_fillable(
                 ui.nav_panel("Purpose",
                     ui.markdown(
                         """
-                        # Strong App Data Analysis
+                        # Lift Metrics
 
                         ### Overview
                         This app is designed to help you analyze your workout data from the Strong app. You can upload your workout data and analyze it in two ways:
@@ -87,7 +88,6 @@ app_ui = ui.page_fillable(
                     ),
                 )
             ),
-        )
     ),
 )
 
