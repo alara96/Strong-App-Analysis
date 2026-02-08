@@ -2,6 +2,7 @@
 Lift Metrics - FastAPI backend.
 Same logic as the original Shiny app; returns JSON for a React/Next.js frontend.
 """
+import os
 from pathlib import Path
 
 import numpy as np
@@ -12,9 +13,16 @@ from pydantic import BaseModel
 
 app = FastAPI(title="Lift Metrics API")
 
+_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+if os.environ.get("LIFT_METRICS_FRONTEND_URL"):
+    _origins.append(os.environ.get("LIFT_METRICS_FRONTEND_URL").rstrip("/"))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
