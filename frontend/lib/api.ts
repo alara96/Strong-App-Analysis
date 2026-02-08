@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_LIFT_METRICS_BACKEND_API || "http://localhost:8000";
+const API_BASE = (process.env.NEXT_PUBLIC_LIFT_METRICS_BACKEND_API || "http://localhost:8000").replace(/\/$/, "");
 
 export async function fetchDefaultData(): Promise<import("./types").UploadResponse> {
   const res = await fetch(`${API_BASE}/api/default-data`);
